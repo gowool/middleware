@@ -67,7 +67,7 @@ type Config struct {
 	ReferrerPolicy string `mapstructure:"referrer_policy"`
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.XSSProtection == "" {
 		cfg.XSSProtection = "1; mode=block"
 	}
@@ -80,15 +80,15 @@ func (cfg *Config) init() {
 }
 
 type Secure struct {
-	cfg Config
+	cfg *Config
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *Secure {
-	cfg.init()
+func New(cfg *Config) *Secure {
+	cfg.Init()
 
 	return &Secure{cfg: cfg}
 }

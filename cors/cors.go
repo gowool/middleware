@@ -10,7 +10,7 @@ import (
 var (
 	allowCredentials = true
 
-	DefaultConfig = Config{
+	DefaultConfig = &Config{
 		AllowedOrigin: "*",
 		AllowedHeaders: strings.Join([]string{
 			wool.HeaderContentType,
@@ -54,14 +54,14 @@ type Config struct {
 }
 
 type CORS struct {
-	cfg Config
+	cfg *Config
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *CORS {
+func New(cfg *Config) *CORS {
 	return &CORS{cfg: cfg}
 }
 

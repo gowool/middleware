@@ -24,7 +24,7 @@ type Config struct {
 	ClientIdle time.Duration `mapstructure:"client_idle"`
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.Version == "" {
 		cfg.Version = "(untracked)"
 	}
@@ -51,7 +51,7 @@ type message struct {
 }
 
 type Event struct {
-	cfg Config
+	cfg *Config
 	log *zap.Logger
 
 	done        chan struct{}
@@ -65,8 +65,8 @@ type Event struct {
 	eventsCount    *prometheus.CounterVec
 }
 
-func New(cfg Config, log *zap.Logger) *Event {
-	cfg.init()
+func New(cfg *Config, log *zap.Logger) *Event {
+	cfg.Init()
 
 	labels := []string{"version", "client"}
 

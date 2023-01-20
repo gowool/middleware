@@ -48,7 +48,7 @@ type Config struct {
 	rxEndpoint *regexp.Regexp
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.ExcludeRegexStatus != "" {
 		cfg.rxStatus, _ = regexp.Compile(cfg.ExcludeRegexStatus)
 	}
@@ -70,16 +70,16 @@ func (cfg *Config) isOK(status, method, endpoint string) bool {
 }
 
 type Logger struct {
-	cfg    Config
+	cfg    *Config
 	logger RequestLogger
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *Logger {
-	cfg.init()
+func New(cfg *Config) *Logger {
+	cfg.Init()
 
 	return &Logger{cfg: cfg}
 }

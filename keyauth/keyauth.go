@@ -45,7 +45,7 @@ type Config struct {
 	ErrorHandler ErrorHandler
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.Validator == nil {
 		panic(errors.New("key-auth middleware requires a validator function"))
 	}
@@ -55,16 +55,16 @@ func (cfg *Config) init() {
 }
 
 type KeyAuth struct {
-	cfg        Config
+	cfg        *Config
 	extractors []ValuesExtractor
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *KeyAuth {
-	cfg.init()
+func New(cfg *Config) *KeyAuth {
+	cfg.Init()
 
 	extractors, err := CreateExtractors(cfg.KeyLookup)
 	if err != nil {

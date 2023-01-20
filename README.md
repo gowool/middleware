@@ -1,5 +1,7 @@
 # Collection of additional middlewares
 
+![License](https://img.shields.io/dub/l/vibe-d.svg)
+
 Here you'll find middleware ready to use with [Wool Framework](https://github.com/gowool/wool).
 
 | Middleware               | Description                                                                                                                         |
@@ -17,3 +19,7 @@ Here you'll find middleware ready to use with [Wool Framework](https://github.co
 | [secure](secure)         | Middleware that implements a few quick security wins                                                                                |
 | [sse](sse)               | Server-Sent Events implementation                                                                                                   |
 | [www](www)               | WWW Middleware                                                                                                                      |
+
+## License
+
+Distributed under MIT License, please see license file within the code for more details.

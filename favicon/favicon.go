@@ -20,24 +20,24 @@ type Config struct {
 	FileSystem   http.FileSystem
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.CacheControl == "" {
 		cfg.CacheControl = "public, max-age=31536000"
 	}
 }
 
 type Favicon struct {
-	cfg     Config
+	cfg     *Config
 	icon    []byte
 	iconLen string
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *Favicon {
-	cfg.init()
+func New(cfg *Config) *Favicon {
+	cfg.Init()
 
 	m := &Favicon{cfg: cfg}
 

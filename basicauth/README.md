@@ -1,5 +1,7 @@
 # Basic Auth
 
+![License](https://img.shields.io/dub/l/vibe-d.svg)
+
 ## Installation
 
 ```shell

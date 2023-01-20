@@ -10,22 +10,22 @@ type Config struct {
 	RequestIDHandler func(c wool.Ctx, requestID string) error
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.TargetHeader == "" {
 		cfg.TargetHeader = wool.HeaderXRequestID
 	}
 }
 
 type RequestID struct {
-	cfg Config
+	cfg *Config
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *RequestID {
-	cfg.init()
+func New(cfg *Config) *RequestID {
+	cfg.Init()
 
 	return &RequestID{cfg: cfg}
 }

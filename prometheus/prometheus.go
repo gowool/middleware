@@ -31,7 +31,7 @@ type Config struct {
 	rxEndpoint *regexp.Regexp
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.Version == "" {
 		cfg.Version = "(untracked)"
 	}
@@ -62,7 +62,7 @@ func (cfg *Config) isOK(status, method, endpoint string) bool {
 }
 
 type Prometheus struct {
-	cfg           Config
+	cfg           *Config
 	uptime        *prometheus.CounterVec
 	reqCount      *prometheus.CounterVec
 	reqDuration   *prometheus.HistogramVec
@@ -70,12 +70,12 @@ type Prometheus struct {
 	respSizeBytes *prometheus.SummaryVec
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *Prometheus {
-	cfg.init()
+func New(cfg *Config) *Prometheus {
+	cfg.Init()
 
 	m := &Prometheus{
 		cfg: cfg,

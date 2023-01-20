@@ -18,10 +18,11 @@ type Config struct {
 	Validator Validator
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.Validator == nil {
 		panic(errors.New("basic-auth middleware requires a validator function"))
 	}
+
 	if cfg.Realm == "" {
 		cfg.Realm = "Restricted"
 	} else {
@@ -30,15 +31,15 @@ func (cfg *Config) init() {
 }
 
 type BasicAuth struct {
-	cfg Config
+	cfg *Config
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *BasicAuth {
-	cfg.init()
+func New(cfg *Config) *BasicAuth {
+	cfg.Init()
 
 	return &BasicAuth{cfg: cfg}
 }

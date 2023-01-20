@@ -17,7 +17,7 @@ type Config struct {
 	MinSize int `mapstructure:"min_size"`
 }
 
-func (cfg *Config) init() {
+func (cfg *Config) Init() {
 	if cfg.Level == gzip.NoCompression {
 		cfg.Level = gzip.DefaultCompression
 	}
@@ -30,12 +30,12 @@ type Gzip struct {
 	wrapper func(http.Handler) http.Handler
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *Gzip {
-	cfg.init()
+func New(cfg *Config) *Gzip {
+	cfg.Init()
 
 	wrapper, err := gziphandler.NewGzipLevelAndMinSize(cfg.Level, cfg.MinSize)
 	if err != nil {

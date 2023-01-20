@@ -11,15 +11,15 @@ type Config struct {
 }
 
 type BodyLimit struct {
-	cfg  Config
+	cfg  *Config
 	pool sync.Pool
 }
 
-func Middleware(cfg Config) wool.Middleware {
+func Middleware(cfg *Config) wool.Middleware {
 	return New(cfg).Middleware
 }
 
-func New(cfg Config) *BodyLimit {
+func New(cfg *Config) *BodyLimit {
 	return &BodyLimit{
 		cfg: cfg,
 		pool: sync.Pool{

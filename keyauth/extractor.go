@@ -53,25 +53,25 @@ func CreateExtractors(lookups string) ([]ValuesExtractor, error) {
 
 		switch parts[0] {
 		case "query":
-			extractors = append(extractors, valuesFromQuery(parts[1]))
+			extractors = append(extractors, ValuesFromQuery(parts[1]))
 		case "path":
-			extractors = append(extractors, valuesFromPath(parts[1]))
+			extractors = append(extractors, ValuesFromPath(parts[1]))
 		case "ctx":
-			extractors = append(extractors, valuesFromCtx(parts[1]))
+			extractors = append(extractors, ValuesFromCtx(parts[1]))
 		case "form":
-			extractors = append(extractors, valuesFromForm(parts[1]))
+			extractors = append(extractors, ValuesFromForm(parts[1]))
 		case "header":
 			prefix := ""
 			if len(parts) > 2 {
 				prefix = parts[2]
 			}
-			extractors = append(extractors, valuesFromHeader(parts[1], prefix))
+			extractors = append(extractors, ValuesFromHeader(parts[1], prefix))
 		}
 	}
 	return extractors, nil
 }
 
-func valuesFromHeader(header string, valuePrefix string) ValuesExtractor {
+func ValuesFromHeader(header string, valuePrefix string) ValuesExtractor {
 	prefixLen := len(valuePrefix)
 	header = textproto.CanonicalMIMEHeaderKey(header)
 	return func(c wool.Ctx) ([]string, ExtractorSource, error) {
@@ -107,28 +107,28 @@ func valuesFromHeader(header string, valuePrefix string) ValuesExtractor {
 	}
 }
 
-func valuesFromQuery(param string) ValuesExtractor {
+func ValuesFromQuery(param string) ValuesExtractor {
 	return func(c wool.Ctx) ([]string, ExtractorSource, error) {
-		if result := valuesFrom(c.Req().QueryParams(), param); result != nil {
+		if result := ValuesFrom(c.Req().QueryParams(), param); result != nil {
 			return result, ExtractorSourceQuery, nil
 		}
 		return nil, ExtractorSourceQuery, ErrQueryExtractorValueMissing
 	}
 }
 
-func valuesFromPath(param string) ValuesExtractor {
+func ValuesFromPath(param string) ValuesExtractor {
 	return func(c wool.Ctx) ([]string, ExtractorSource, error) {
-		if result := valuesFrom(c.Req().PathParams(), param); result != nil {
+		if result := ValuesFrom(c.Req().PathParams(), param); result != nil {
 			return result, ExtractorSourcePath, nil
 		}
 		return nil, ExtractorSourcePath, ErrPathExtractorValueMissing
 	}
 }
 
-func valuesFromCtx(name string) ValuesExtractor {
+func ValuesFromCtx(name string) ValuesExtractor {
 	return func(c wool.Ctx) ([]string, ExtractorSource, error) {
 		if data, err := cast.ToStringMapStringSliceE(c.Store()); err == nil {
-			if result := valuesFrom(data, name); result != nil {
+			if result := ValuesFrom(data, name); result != nil {
 				return result, ExtractorSourceCtx, nil
 			}
 		}
@@ -136,10 +136,10 @@ func valuesFromCtx(name string) ValuesExtractor {
 	}
 }
 
-func valuesFromForm(name string) ValuesExtractor {
+func ValuesFromForm(name string) ValuesExtractor {
 	return func(c wool.Ctx) ([]string, ExtractorSource, error) {
 		if data, err := c.Req().FormValues(); err == nil {
-			if result := valuesFrom(data, name); result != nil {
+			if result := ValuesFrom(data, name); result != nil {
 				return result, ExtractorSourceForm, nil
 			}
 		}
@@ -147,7 +147,7 @@ func valuesFromForm(name string) ValuesExtractor {
 	}
 }
 
-func valuesFrom(data map[string][]string, name string) []string {
+func ValuesFrom(data map[string][]string, name string) []string {
 	if data != nil {
 		result := data[name]
 		if l := len(result); l > 0 {
