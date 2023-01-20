@@ -17,8 +17,8 @@ github.com/go-playground/validator/v10 v10.11.1/go.mod h1:i+3WkQ1FvaUjjxh1kSvIA4
 github.com/goccy/go-json v0.10.0 h1:mXKd9Qw4NuzShiRlOXKews24ufknHO7gx30lsDyokKA=
 github.com/goccy/go-json v0.10.0/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
 github.com/google/go-cmp v0.5.7 h1:81/ik6ipDQS2aGcBfIN5dHDB36BwrStyeAQquSYCV4o=
-github.com/gowool/wool v0.0.0-20230120000520-d2d58a20d274 h1:sB3qnTgEH11g3Iaw+BP0qzFMoUjYOCZ2e/WQrtL98b8=
-github.com/gowool/wool v0.0.0-20230120000520-d2d58a20d274/go.mod h1:Spo+0aq5Sm6wErvbrKcODC1qKhdw5gwB7kxUnptMdP0=
+github.com/gowool/wool v0.0.0-20230120101240-d954738669f0 h1:eR+iguWTrmlC1B/gYIzeDF6ptSRYiqPYqyIqwGuYDSI=
+github.com/gowool/wool v0.0.0-20230120101240-d954738669f0/go.mod h1:Spo+0aq5Sm6wErvbrKcODC1qKhdw5gwB7kxUnptMdP0=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pretty v0.2.1/go.mod h1:ipq/a2n7PKx3OHsz4KJII5eveXtPO4qwEXGdVfWzfnI=
 github.com/kr/pretty v0.3.0 h1:WgNl7dwNpEZ6jJ9k1snq4pZsg7DOEN8hP9Xw0Tsjwk0=

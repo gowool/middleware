@@ -2,7 +2,7 @@ module github.com/gowool/middleware/proxy
 
 go 1.19
 
-require github.com/gowool/wool v0.0.0-20230120000520-d2d58a20d274
+require github.com/gowool/wool v0.0.0-20230120101240-d954738669f0
 
 require (
 	github.com/go-playground/locales v0.14.0 // indirect

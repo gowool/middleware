@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/google/uuid v1.3.0
-	github.com/gowool/wool v0.0.0-20230120000520-d2d58a20d274
+	github.com/gowool/wool v0.0.0-20230120101240-d954738669f0
 	github.com/prometheus/client_golang v1.14.0
 	go.uber.org/zap v1.24.0
 )
