@@ -7,7 +7,7 @@ import (
 	"github.com/gowool/wool"
 	"github.com/gowool/wool/render"
 	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/zap"
+	"golang.org/x/exp/slog"
 	"io"
 	"time"
 )
@@ -52,7 +52,7 @@ type message struct {
 
 type Event struct {
 	cfg *Config
-	log *zap.Logger
+	log *slog.Logger
 
 	done        chan struct{}
 	notifier    chan message
@@ -65,14 +65,14 @@ type Event struct {
 	eventsCount    *prometheus.CounterVec
 }
 
-func New(cfg *Config, log *zap.Logger) *Event {
+func New(cfg *Config) *Event {
 	cfg.Init()
 
 	labels := []string{"version", "client"}
 
 	e := &Event{
 		cfg:         cfg,
-		log:         log,
+		log:         wool.Logger().WithGroup("middleware.sse"),
 		done:        make(chan struct{}, 1),
 		notifier:    make(chan message),
 		subscribe:   make(chan client),
@@ -257,13 +257,13 @@ func (e *Event) unsub(clientID string) {
 		delete(e.clients, clientID)
 		e.metricUnsubscribe(cl)
 	} else {
-		e.log.Debug("unsubscribe client not found", zap.String("client", clientID))
+		e.log.Debug("unsubscribe client not found", "client", clientID)
 	}
 }
 
 func (e *Event) metricSubscribe(cl client) {
 	e.clientsCount.WithLabelValues(e.cfg.Version, cl.ID).Inc()
-	e.log.Info("subscribe client", zap.String("client", cl.ID), zap.Time("start", cl.start))
+	e.log.Info("subscribe client", "client", cl.ID, "start", cl.start)
 }
 
 func (e *Event) metricUnsubscribe(cl client) {
@@ -271,11 +271,11 @@ func (e *Event) metricUnsubscribe(cl client) {
 
 	e.clientDuration.WithLabelValues(e.cfg.Version, cl.ID).Observe(duration)
 	e.clientsCount.WithLabelValues(e.cfg.Version, cl.ID).Dec()
-	e.log.Info("unsubscribe client", zap.String("client", cl.ID), zap.Float64("duration_seconds", duration))
+	e.log.Info("unsubscribe client", "client", cl.ID, "duration_seconds", duration)
 }
 
 func (e *Event) metricEvent(clientId string, event render.SSEvent) {
 	e.eventsCount.WithLabelValues(e.cfg.Version, clientId).Inc()
-	e.log.Info("notify client", zap.String("client", clientId))
-	e.log.Debug("notify client", zap.String("client", clientId), zap.Any("event", event))
+	e.log.Info("notify client", "client", clientId)
+	e.log.Debug("notify client", "client", clientId, "event", event)
 }
