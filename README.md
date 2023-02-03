@@ -12,7 +12,6 @@ Here you'll find middleware ready to use with [Wool Framework](https://github.co
 | [favicon](favicon)       | Favicon middleware that ignores favicon requests or caches a provided icon in memory to improve performance by skipping disk access |
 | [gzip](gzip)             | Gzip middleware to enable `GZIP` support                                                                                            |
 | [keyauth](keyauth)       | Key authentication middleware                                                                                                       |
-| [logger](logger)         | Logger middleware that logs HTTP request/response details                                                                           |
 | [prometheus](prometheus) | Easily create metrics endpoint for the [prometheus](http://prometheus.io) instrumentation tool                                      |
 | [proxy](proxy)           | Proxy inspects common reverse proxy headers and sets the corresponding fields in the HTTP request struct                            |
 | [requestid](requestid)   | Request ID middleware that adds an identifier to the response                                                                       |
