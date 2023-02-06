@@ -2,7 +2,7 @@ module github.com/gowool/middleware/basicauth
 
 go 1.19
 
-require github.com/gowool/wool v0.0.0-20230203224645-30c6b38ab5ab
+require github.com/gowool/wool v0.0.0-20230206095925-11fec9706d35
 
 require (
 	github.com/go-playground/locales v0.14.1 // indirect

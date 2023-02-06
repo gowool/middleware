@@ -11,7 +11,7 @@ import (
 )
 
 func Mount(w *wool.Wool) {
-	w.Get("/metrics", wool.ToHandler(promhttp.Handler()))
+	w.GET("/metrics", wool.ToHandler(promhttp.Handler()))
 }
 
 var labels = []string{"version", "status", "endpoint", "method"}

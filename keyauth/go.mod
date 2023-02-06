@@ -3,7 +3,7 @@ module github.com/gowool/middleware/keyauth
 go 1.19
 
 require (
-	github.com/gowool/wool v0.0.0-20230203224645-30c6b38ab5ab
+	github.com/gowool/wool v0.0.0-20230206095925-11fec9706d35
 	github.com/spf13/cast v1.5.0
 )
 

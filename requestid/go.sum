@@ -13,8 +13,8 @@ github.com/goccy/go-json v0.10.0/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MG
 github.com/google/go-cmp v0.5.8 h1:e6P7q2lk1O+qJJb4BtCQXlK8vWEO8V1ZeuEdJNOqZyg=
 github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
-github.com/gowool/wool v0.0.0-20230203224645-30c6b38ab5ab h1:YUHwxwkcL8HbfqADgA8VCISuqidEjOdD7bB3w6x2mDQ=
-github.com/gowool/wool v0.0.0-20230203224645-30c6b38ab5ab/go.mod h1:B++NOGR9kkD1Kh2zD2yz63oDHUOh6/eVwJbDVT3nmU8=
+github.com/gowool/wool v0.0.0-20230206095925-11fec9706d35 h1:hKAy0ZS2ZPvPE2Fv9qlHZueZKqIBdjx0Og5IvyEwQos=
+github.com/gowool/wool v0.0.0-20230206095925-11fec9706d35/go.mod h1:B++NOGR9kkD1Kh2zD2yz63oDHUOh6/eVwJbDVT3nmU8=
 github.com/kr/pretty v0.3.0 h1:WgNl7dwNpEZ6jJ9k1snq4pZsg7DOEN8hP9Xw0Tsjwk0=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
 github.com/leodido/go-urn v1.2.1 h1:BqpAaACuzVSgi/VLzGZIobT2z4v53pjosyNd9Yv6n/w=
