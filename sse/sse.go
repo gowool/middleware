@@ -65,14 +65,14 @@ type Event struct {
 	eventsCount    *prometheus.CounterVec
 }
 
-func New(cfg *Config) *Event {
+func New(cfg *Config, log *slog.Logger) *Event {
 	cfg.Init()
 
 	labels := []string{"version", "client"}
 
 	e := &Event{
 		cfg:         cfg,
-		log:         wool.Logger().WithGroup("middleware.sse"),
+		log:         log,
 		done:        make(chan struct{}, 1),
 		notifier:    make(chan message),
 		subscribe:   make(chan client),
