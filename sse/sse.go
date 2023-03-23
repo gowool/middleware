@@ -18,18 +18,29 @@ const (
 	EventClosing   = "closing"
 )
 
+type MetricsConfig struct {
+	Enabled   bool   `mapstructure:"enabled"`
+	Version   string `mapstructure:"version"`
+	Namespace string `mapstructure:"namespace"`
+}
+
 type Config struct {
-	Version    string        `mapstructure:"version"`
-	Namespace  string        `mapstructure:"namespace"`
-	ClientIdle time.Duration `mapstructure:"client_idle"`
+	ClientIdle time.Duration  `mapstructure:"client_idle"`
+	Metrics    *MetricsConfig `mapstructure:"metrics"`
 }
 
 func (cfg *Config) Init() {
-	if cfg.Version == "" {
-		cfg.Version = "(untracked)"
+	if cfg.Metrics == nil {
+		cfg.Metrics = &MetricsConfig{}
 	}
-	if cfg.Namespace == "" {
-		cfg.Namespace = "sse"
+
+	if cfg.Metrics.Enabled {
+		if cfg.Metrics.Version == "" {
+			cfg.Metrics.Version = "(untracked)"
+		}
+		if cfg.Metrics.Namespace == "" {
+			cfg.Metrics.Namespace = "sse"
+		}
 	}
 }
 
@@ -68,8 +79,6 @@ type Event struct {
 func New(cfg *Config, log *slog.Logger) *Event {
 	cfg.Init()
 
-	labels := []string{"version", "client"}
-
 	e := &Event{
 		cfg:         cfg,
 		log:         log,
@@ -78,30 +87,37 @@ func New(cfg *Config, log *slog.Logger) *Event {
 		subscribe:   make(chan client),
 		unsubscribe: make(chan string),
 		clients:     make(map[string]client),
-		clientsCount: prometheus.NewGaugeVec(
+	}
+
+	if cfg.Metrics.Enabled {
+		labels := []string{"version", "client"}
+
+		e.clientsCount = prometheus.NewGaugeVec(
 			prometheus.GaugeOpts{
-				Namespace: cfg.Namespace,
+				Namespace: cfg.Metrics.Namespace,
 				Name:      "http_sse_clients_count",
 				Help:      "HTTP SSE number of clients.",
 			}, labels,
-		),
-		clientDuration: prometheus.NewHistogramVec(
+		)
+
+		e.clientDuration = prometheus.NewHistogramVec(
 			prometheus.HistogramOpts{
-				Namespace: cfg.Namespace,
+				Namespace: cfg.Metrics.Namespace,
 				Name:      "http_sse_connection_duration_seconds",
 				Help:      "HTTP SSE connection duration in seconds.",
 			}, labels,
-		),
-		eventsCount: prometheus.NewCounterVec(
+		)
+
+		e.eventsCount = prometheus.NewCounterVec(
 			prometheus.CounterOpts{
-				Namespace: cfg.Namespace,
+				Namespace: cfg.Metrics.Namespace,
 				Name:      "http_sse_events_count_total",
 				Help:      "HTTP SSE total number of events.",
 			}, labels,
-		),
-	}
+		)
 
-	prometheus.MustRegister(e.clientsCount, e.clientDuration, e.eventsCount)
+		prometheus.MustRegister(e.clientsCount, e.clientDuration, e.eventsCount)
+	}
 
 	go e.listen()
 
@@ -242,7 +258,12 @@ func (e *Event) broadcast(event render.SSEvent) {
 func (e *Event) notify(clientID string, event render.SSEvent) {
 	if cl, ok := e.clients[clientID]; ok {
 		cl.EventChan <- event
-		e.metricEvent(clientID, event)
+		e.metricEvent(clientID)
+		if e.log.Enabled(slog.LevelDebug) {
+			e.log.Debug("notify client", "client", clientID, "event", event)
+		} else {
+			e.log.Info("notify client", "client", clientID)
+		}
 	}
 }
 
@@ -250,32 +271,37 @@ func (e *Event) sub(cl client) {
 	e.unsub(cl.ID)
 	e.clients[cl.ID] = cl
 	e.metricSubscribe(cl)
+	e.log.Info("subscribe client", "client", cl.ID, "start", cl.start)
 }
 
 func (e *Event) unsub(clientID string) {
 	if cl, ok := e.clients[clientID]; ok {
 		delete(e.clients, clientID)
 		e.metricUnsubscribe(cl)
+		e.log.Info("unsubscribe client", "client", cl.ID, "duration_seconds", time.Since(cl.start).Seconds())
 	} else {
 		e.log.Debug("unsubscribe client not found", "client", clientID)
 	}
 }
 
 func (e *Event) metricSubscribe(cl client) {
-	e.clientsCount.WithLabelValues(e.cfg.Version, cl.ID).Inc()
-	e.log.Info("subscribe client", "client", cl.ID, "start", cl.start)
+	if e.clientsCount != nil {
+		e.clientsCount.WithLabelValues(e.cfg.Metrics.Version, cl.ID).Inc()
+	}
 }
 
 func (e *Event) metricUnsubscribe(cl client) {
-	duration := time.Since(cl.start).Seconds()
+	if e.clientDuration != nil {
+		e.clientDuration.WithLabelValues(e.cfg.Metrics.Version, cl.ID).Observe(time.Since(cl.start).Seconds())
+	}
 
-	e.clientDuration.WithLabelValues(e.cfg.Version, cl.ID).Observe(duration)
-	e.clientsCount.WithLabelValues(e.cfg.Version, cl.ID).Dec()
-	e.log.Info("unsubscribe client", "client", cl.ID, "duration_seconds", duration)
+	if e.clientsCount != nil {
+		e.clientsCount.WithLabelValues(e.cfg.Metrics.Version, cl.ID).Dec()
+	}
 }
 
-func (e *Event) metricEvent(clientId string, event render.SSEvent) {
-	e.eventsCount.WithLabelValues(e.cfg.Version, clientId).Inc()
-	e.log.Info("notify client", "client", clientId)
-	e.log.Debug("notify client", "client", clientId, "event", event)
+func (e *Event) metricEvent(clientID string) {
+	if e.eventsCount != nil {
+		e.eventsCount.WithLabelValues(e.cfg.Metrics.Version, clientID).Inc()
+	}
 }
