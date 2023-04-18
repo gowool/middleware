@@ -195,7 +195,6 @@ func (e *Event) Middleware(next wool.Handler) wool.Handler {
 
 		defer func() {
 			go e.Unsubscribe(clientID)
-			close(cl.EventChan)
 			close(cl.Done)
 		}()
 
@@ -277,6 +276,7 @@ func (e *Event) sub(cl client) {
 func (e *Event) unsub(clientID string) {
 	if cl, ok := e.clients[clientID]; ok {
 		delete(e.clients, clientID)
+		close(cl.EventChan)
 		e.metricUnsubscribe(cl)
 		e.log.Info("unsubscribe client", "client", cl.ID, "duration_seconds", time.Since(cl.start).Seconds())
 	} else {
