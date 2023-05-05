@@ -258,7 +258,7 @@ func (e *Event) notify(clientID string, event render.SSEvent) {
 	if cl, ok := e.clients[clientID]; ok {
 		cl.EventChan <- event
 		e.metricEvent(clientID)
-		if e.log.Enabled(slog.LevelDebug) {
+		if e.log.Enabled(context.Background(), slog.LevelDebug) {
 			e.log.Debug("notify client", "client", clientID, "event", event)
 		} else {
 			e.log.Info("notify client", "client", clientID)
