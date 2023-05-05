@@ -2,7 +2,7 @@ module github.com/gowool/middleware/bodylimit
 
 go 1.19
 
-require github.com/gowool/wool v0.0.0-20230505123741-9ce0e1c1441c
+require github.com/gowool/wool v0.0.0-20230505180316-43a82929e1ef
 
 require (
 	github.com/go-playground/locales v0.14.1 // indirect

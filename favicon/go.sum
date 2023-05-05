@@ -12,8 +12,8 @@ github.com/go-playground/validator/v10 v10.12.0/go.mod h1:hCAPuzYvKdP33pxWa+2+6A
 github.com/goccy/go-json v0.10.2 h1:CrxCmQqYDkv1z7lO7Wbh2HN93uovUHgrECaO5ZrCXAU=
 github.com/goccy/go-json v0.10.2/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
 github.com/google/go-cmp v0.5.8 h1:e6P7q2lk1O+qJJb4BtCQXlK8vWEO8V1ZeuEdJNOqZyg=
-github.com/gowool/wool v0.0.0-20230505123741-9ce0e1c1441c h1:uDD3B/gj7Gr7hAEozqUSKNy/Fmv/9XE1q92tp7N6vBI=
-github.com/gowool/wool v0.0.0-20230505123741-9ce0e1c1441c/go.mod h1:6Kq5e+2cjs2IYQVzl19f8NG5M+oBTSvPhUDrVf5n66s=
+github.com/gowool/wool v0.0.0-20230505180316-43a82929e1ef h1:kCm1xrBiZl6YDdIcpQj3i9B/LlzEik+YJD8+MClUwPw=
+github.com/gowool/wool v0.0.0-20230505180316-43a82929e1ef/go.mod h1:6Kq5e+2cjs2IYQVzl19f8NG5M+oBTSvPhUDrVf5n66s=
 github.com/kr/pretty v0.3.0 h1:WgNl7dwNpEZ6jJ9k1snq4pZsg7DOEN8hP9Xw0Tsjwk0=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
 github.com/leodido/go-urn v1.2.2 h1:7z68G0FCGvDk646jz1AelTYNYWrTNm0bEcFAo147wt4=

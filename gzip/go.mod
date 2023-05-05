@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/NYTimes/gziphandler v1.1.1
-	github.com/gowool/wool v0.0.0-20230505123741-9ce0e1c1441c
+	github.com/gowool/wool v0.0.0-20230505180316-43a82929e1ef
 )
 
 require (
