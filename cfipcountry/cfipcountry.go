@@ -8,12 +8,14 @@ import (
 
 const HeaderCfIPCountry = "CF-IPCountry"
 
-type Config map[string]*struct {
+type Item struct {
 	Pattern     string `mapstructure:"pattern"`
 	RedirectURL string `mapstructure:"redirect_url"`
 	Permanently bool   `mapstructure:"permanently"`
 	compiled    *regexp2.Regexp
 }
+
+type Config map[string]*Item
 
 func (cfg *Config) init() {
 	for _, v := range *cfg {
@@ -47,6 +49,16 @@ func New(cfg *Config) *CfIPCountry {
 }
 
 func (m *CfIPCountry) Middleware(next wool.Handler) wool.Handler {
+	fn := func(c wool.Ctx, item *Item) error {
+		if ok, _ := item.compiled.MatchString(c.Req().URL.String()); !ok {
+			if item.Permanently {
+				return c.Redirect(http.StatusMovedPermanently, item.RedirectURL)
+			}
+			return c.Redirect(http.StatusFound, item.RedirectURL)
+		}
+		return next(c)
+	}
+
 	return func(c wool.Ctx) error {
 		country := c.Req().Header.Get(HeaderCfIPCountry)
 
@@ -54,15 +66,12 @@ func (m *CfIPCountry) Middleware(next wool.Handler) wool.Handler {
 			return next(c)
 		}
 
-		url := c.Req().URL.String()
-
 		if item, ok := (*m.cfg)[country]; ok {
-			if ok, _ = item.compiled.MatchString(url); !ok {
-				if item.Permanently {
-					return c.Redirect(http.StatusMovedPermanently, item.RedirectURL)
-				}
-				return c.Redirect(http.StatusFound, item.RedirectURL)
-			}
+			return fn(c, item)
+		}
+
+		if item, ok := (*m.cfg)["*"]; ok {
+			return fn(c, item)
 		}
 
 		return next(c)
